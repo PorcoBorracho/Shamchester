@@ -13,7 +13,6 @@
             </div>
             <div class="story">
                 <p><s:text name="inicio.p1"/></p>
-                <p><s:text name="inicio.p2"/></p>
                 <div class="cta-row">
                     <a class="btn btn-green" href="<s:url action="partidos"/>"><s:text name="inicio.cta.partidos"/></a>
                     <a class="btn btn-ghost" href="<s:url action="plantilla"/>"><s:text name="inicio.cta.plantilla"/></a>

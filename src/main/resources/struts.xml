@@ -9,6 +9,11 @@
     <constant name="struts.i18n.encoding" value="UTF-8"/>
     <constant name="struts.devMode" value="true"/>
     <constant name="struts.ui.theme" value="simple"/>
+    <!-- Las acciones las crea Spring: pueden recibir repositorios por constructor -->
+    <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.objectFactory.spring.autoWire" value="constructor"/>
+    <!-- OGNL puede leer los objetos de vista que devuelven las acciones -->
+    <constant name="struts.allowlist.packageNames" value="es.shamchester.model"/>
     <!-- Deja pasar los archivos estáticos -->
     <constant name="struts.action.excludePattern" value="/css/.*,/js/.*,/img/.*"/>
 
@@ -20,6 +25,18 @@
         </action>
         <action name="plantilla" class="es.shamchester.action.PlantillaAction">
             <result>/WEB-INF/jsp/plantilla.jsp</result>
+        </action>
+        <!-- Foto de un jugador desde la BDD: /jugador-foto?id=1 -->
+        <action name="jugador-foto" class="es.shamchester.action.JugadorFotoAction">
+            <result type="stream">
+                <param name="contentType">${contentType}</param>
+                <param name="contentLength">${contentLength}</param>
+                <param name="inputName">inputStream</param>
+                <param name="contentDisposition">inline</param>
+            </result>
+            <result name="notFound" type="httpheader">
+                <param name="status">404</param>
+            </result>
         </action>
         <action name="partidos" class="es.shamchester.action.PartidosAction">
             <result>/WEB-INF/jsp/partidos.jsp</result>

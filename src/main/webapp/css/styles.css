@@ -105,6 +105,8 @@
   .pos-tag.DEF { background: #2D2E3A; }
   .pos-tag.MED { background: var(--green); }
   .pos-tag.DEL { background: #fff; color: var(--night); }
+  .injured-tag { position: absolute; left: 12px; top: 12px; padding: 4px 9px; font: 800 0.85rem/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: #C0392B; }
+  .player.injured .photo img, .player.injured .photo svg { filter: grayscale(0.6); }
   .player .info { padding: 14px 16px 18px; }
   .player h4 { margin: 0; font: 800 1.55rem/1 var(--display); text-transform: uppercase; }
   .player .role { margin: 4px 0 10px; color: var(--muted); font-size: 0.95rem; }
