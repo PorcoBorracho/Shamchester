@@ -1,0 +1,20 @@
+/* Colores, tipografías y curvas de animación del club */
+:root {
+  /* colores del club */
+  --green: #1A8841;
+  --purple: #5500D5;
+  /* tonos derivados para texto sobre fondo oscuro (contraste AA) */
+  --green-hi: #4FC77A;
+  --purple-hi: #A983FF;
+  --night: #0C0D12;
+  --stand: #14151C;
+  --stand-2: #1B1C25;
+  --line: #2A2B36;
+  --text: #F2F0F5;
+  --soft: #D8D5DE;
+  --muted: #A6A2B0;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --display: "Big Shoulders Display", "Barlow Condensed", sans-serif;
+  --sans: "Hanken Grotesk", system-ui, sans-serif;
+  --pad: clamp(16px, 3vw, 40px);
+}

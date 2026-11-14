@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 6.0//EN"
+        "https://struts.apache.org/dtds/struts-6.0.dtd">
+<struts>
+    <!-- Textos: src/main/resources/i18n/messages*.properties -->
+    <constant name="struts.custom.i18n.resources" value="i18n/messages"/>
+    <constant name="struts.locale" value="gl"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <constant name="struts.devMode" value="true"/>
+    <constant name="struts.ui.theme" value="simple"/>
+    <!-- Deja pasar los archivos estáticos -->
+    <constant name="struts.action.excludePattern" value="/css/.*,/js/.*,/img/.*"/>
+
+    <package name="web" namespace="/" extends="struts-default">
+        <default-action-ref name="inicio"/>
+
+        <action name="inicio" class="es.shamchester.action.InicioAction">
+            <result>/WEB-INF/jsp/inicio.jsp</result>
+        </action>
+        <action name="plantilla" class="es.shamchester.action.PlantillaAction">
+            <result>/WEB-INF/jsp/plantilla.jsp</result>
+        </action>
+        <action name="partidos" class="es.shamchester.action.PartidosAction">
+            <result>/WEB-INF/jsp/partidos.jsp</result>
+        </action>
+        <action name="newsletter" class="es.shamchester.action.NewsletterAction">
+            <result>/WEB-INF/jsp/newsletter.jsp</result>
+        </action>
+        <action name="contacto" class="es.shamchester.action.ContactoAction">
+            <result>/WEB-INF/jsp/contacto.jsp</result>
+        </action>
+    </package>
+</struts>
