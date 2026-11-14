@@ -6,6 +6,11 @@
 
     <display-name>Shamchester United</display-name>
 
+    <!-- Logs: el primero, para que LOG_DIR y LOG_LEVEL se apliquen desde el arranque -->
+    <listener>
+        <listener-class>es.shamchester.config.LogConfigListener</listener-class>
+    </listener>
+
     <!-- Spring: contexto de aplicación configurado por clases Java -->
     <context-param>
         <param-name>contextClass</param-name>

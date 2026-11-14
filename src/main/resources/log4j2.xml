@@ -1,14 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logs de Shamchester United.
+  Configurable desde el .env (los lee LogConfigListener al arrancar):
+    LOG_DIR    carpeta de los .log (relativa a la raíz del proyecto o absoluta). Por defecto: logs
+    LOG_LEVEL  nivel del código de la aplicación (es.shamchester): trace, debug, info, warn, error. Por defecto: info
+  Archivos:
+    app.log    todo lo que se registra (rota cada día o al llegar a 10 MB, se guardan 30)
+    error.log  solo errores, con la traza completa
+-->
 <Configuration status="warn">
+    <Properties>
+        <Property name="dir">${sys:shamchester.log.dir:-logs}</Property>
+        <Property name="level">${sys:shamchester.log.level:-info}</Property>
+        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] %c{1.} - %msg%n%throwable</Property>
+    </Properties>
+
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{HH:mm:ss} %-5level %c{1} - %msg%n"/>
+            <PatternLayout pattern="%d{HH:mm:ss} %-5level %c{1} - %msg%n%throwable"/>
         </Console>
+
+        <RollingFile name="app"
+                     fileName="${dir}/app.log"
+                     filePattern="${dir}/app-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${pattern}" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30">
+                <Delete basePath="${dir}" maxDepth="1">
+                    <IfFileName glob="app-*.log.gz"/>
+                    <IfLastModified age="30d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="errors"
+                     fileName="${dir}/error.log"
+                     filePattern="${dir}/error-%d{yyyy-MM-dd}-%i.log.gz">
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${pattern}" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
+        <!-- Código del proyecto -->
+        <Logger name="es.shamchester" level="${level}"/>
+        <!-- Librerías -->
         <Logger name="org.apache.struts2" level="info"/>
+        <Logger name="org.springframework" level="info"/>
+        <Logger name="com.zaxxer.hikari" level="info"/>
+        <Logger name="org.hibernate" level="warn"/>
+        <!-- Para ver las SQL que lanza Hibernate, cambia a debug -->
+        <Logger name="org.hibernate.SQL" level="warn"/>
+
         <Root level="warn">
             <AppenderRef ref="console"/>
+            <AppenderRef ref="app"/>
+            <AppenderRef ref="errors"/>
         </Root>
     </Loggers>
 </Configuration>

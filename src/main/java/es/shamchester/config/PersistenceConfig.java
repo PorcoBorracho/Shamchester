@@ -2,6 +2,8 @@ package es.shamchester.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,8 @@ import java.util.Map;
 @EnableJpaRepositories(basePackages = "es.shamchester.repository")
 public class PersistenceConfig {
 
+    private static final Logger LOG = LogManager.getLogger(PersistenceConfig.class);
+
     @Bean(destroyMethod = "close")
     public DataSource dataSource() {
         String host = required("SUPABASE_DB_HOST");
@@ -49,6 +53,10 @@ public class PersistenceConfig {
         }
         // Arranca aunque la BDD no responda; la conexión se abre en la primera consulta
         cfg.setInitializationFailTimeout(-1);
+        // Datos de conexión en uso (la contraseña nunca se escribe, solo su longitud)
+        LOG.info("Supabase: {} · usuario {} · contraseña de {} caracteres{}",
+                cfg.getJdbcUrl(), cfg.getUsername(), cfg.getPassword().length(),
+                System.getenv("SUPABASE_DB_PASSWORD") != null ? " (tomada de las variables del sistema, no del .env)" : "");
         return new HikariDataSource(cfg);
     }
 

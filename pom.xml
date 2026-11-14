@@ -79,6 +79,12 @@
             <artifactId>log4j-core</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+        <!-- Envía a log4j los logs de librerías que usan SLF4J (HikariCP) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
 
         <!-- Los aporta el servidor (Tomcat 10.1+, Jetty 12) -->
         <dependency>
