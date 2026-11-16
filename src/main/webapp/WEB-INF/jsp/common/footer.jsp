@@ -3,7 +3,7 @@
 <footer>
     <div class="wrap">
         <span><s:text name="app.since"/></span>
-        <span><s:text name="footer.note"/></span>
+        <!--<span><s:text name="footer.note"/></span>-->
     </div>
 </footer>
 <script src="${pageContext.request.contextPath}/js/menu.js"></script>

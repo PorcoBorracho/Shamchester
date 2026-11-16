@@ -26,7 +26,7 @@
             <a href="<s:url action="inicio"/>"<s:if test="#request.currentPage == 'inicio'"> class="on" aria-current="page"</s:if>><s:text name="nav.inicio"/></a>
             <a href="<s:url action="plantilla"/>"<s:if test="#request.currentPage == 'plantilla'"> class="on" aria-current="page"</s:if>><s:text name="nav.plantilla"/></a>
             <a href="<s:url action="partidos"/>"<s:if test="#request.currentPage == 'partidos'"> class="on" aria-current="page"</s:if>><s:text name="nav.partidos"/></a>
-            <a href="<s:url action="newsletter"/>"<s:if test="#request.currentPage == 'newsletter'"> class="on" aria-current="page"</s:if>><s:text name="nav.newsletter"/></a>
+            <!--<a href="<s:url action="newsletter"/>"<s:if test="#request.currentPage == 'newsletter'"> class="on" aria-current="page"</s:if>><s:text name="nav.newsletter"/></a>-->
             <a href="<s:url action="contacto"/>"<s:if test="#request.currentPage == 'contacto'"> class="on" aria-current="page"</s:if>><s:text name="nav.contacto"/></a>
         </nav>
     </div>
