@@ -19,7 +19,7 @@ public interface PlantillaRepository extends JpaRepository<Plantilla, PlantillaI
               join p.jugador j
               join p.temporada t
              where t.actual = true
-             order by p.dorsal
+             order by j.lesionado, p.dorsal
             """)
     List<FilaPlantilla> findPlantillaActual();
 }
