@@ -11,9 +11,15 @@ import java.util.Map;
 
 /**
  * Lee el archivo .env de la raíz del proyecto (o la ruta de la variable ENV_FILE).
- * Las variables de entorno del sistema tienen prioridad sobre las del archivo.
+ * Las variables de entorno del sistema tienen prioridad sobre las del archivo y,
+ * si no hay .env (Docker, Vercel), se toman directamente del sistema las que
+ * empiezan por uno de los prefijos de la aplicación.
  */
 public final class Env {
+
+    /** Prefijos de las variables de la aplicación que se leen del sistema aunque no estén en el .env. */
+    private static final List<String> PREFIJOS =
+            List.of("APP_", "SOCIAL_", "CONTACT_", "MAP_", "NEXT_", "SUPABASE_", "LOG_");
 
     private static final Map<String, String> VALUES = load();
 
@@ -55,7 +61,12 @@ public final class Env {
                 throw new IllegalStateException("No se pudo leer " + file.toAbsolutePath(), e);
             }
         }
-        values.replaceAll((key, value) -> System.getenv().getOrDefault(key, value));
+        // Las variables del sistema ganan; las de la aplicación se añaden aunque no estén en el archivo
+        System.getenv().forEach((key, value) -> {
+            if (values.containsKey(key) || PREFIJOS.stream().anyMatch(key::startsWith)) {
+                values.put(key, value);
+            }
+        });
         return values;
     }
 }
