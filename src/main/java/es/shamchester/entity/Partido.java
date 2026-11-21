@@ -42,6 +42,9 @@ public class Partido {
     @Column(insertable = false, updatable = false)
     private boolean finalizado;
 
+    @Column(name = "video_url")
+    private String videoUrl;
+
     @Column(insertable = false, updatable = false, length = 1)
     private String resultado;
 
@@ -76,6 +79,9 @@ public class Partido {
     public void setGolesContra(Short golesContra) { this.golesContra = golesContra; }
 
     public boolean isFinalizado() { return finalizado; }
+
+    public String getVideoUrl() { return videoUrl; }
+    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
 
     public String getResultado() { return resultado; }
 }

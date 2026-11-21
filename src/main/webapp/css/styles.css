@@ -245,3 +245,71 @@
   .news-page .wrap { width: 100%; }
   .next .side { justify-content: center; }
   .hist td.rival { font-weight: 600; }
+
+/* ---------- Vídeo del partido ---------- */
+.btn-sm { padding: 8px 12px; font-size: 0.95rem; min-height: 40px; }
+.hist td.video-col { text-align: right; width: 1%; white-space: nowrap; }
+
+.video-modal {
+  --head: 72px;
+  --gap: clamp(12px, 3vw, 40px);
+  padding: 0; border: 0; margin: auto; background: transparent; color: var(--text);
+  /* lo mayor posible sin que el vídeo 16:9 se salga en alto */
+  width: min(1440px, calc(100vw - 2 * var(--gap)), calc((100dvh - 2 * var(--gap) - var(--head)) * 16 / 9));
+  max-width: none; max-height: none; overflow: visible;
+}
+.video-modal::backdrop {
+  background: rgba(12, 13, 18, 0.92);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  opacity: 0; transition: opacity 200ms var(--ease-out);
+}
+.video-modal__panel {
+  border: 1px solid var(--line); background: var(--stand); overflow: hidden;
+  opacity: 0; transform: scale(0.96); transform-origin: center;
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.video-modal.is-open::backdrop { opacity: 1; }
+.video-modal.is-open .video-modal__panel { opacity: 1; transform: none; }
+.video-modal.is-closing::backdrop { transition-duration: 140ms; }
+.video-modal.is-closing .video-modal__panel { transition-duration: 140ms; transition-timing-function: ease-in; }
+
+/* cabecera morada, como la tarjeta del próximo partido */
+.video-modal__head {
+  min-height: var(--head); background: var(--purple);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 0 0 0 clamp(16px, 2.5vw, 28px);
+}
+.video-modal__head h3 {
+  margin: 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font: 900 clamp(1.5rem, 3vw, 2.3rem)/1 var(--display); text-transform: uppercase; color: #fff;
+}
+.video-modal__close {
+  flex: none; align-self: stretch; width: var(--head); display: grid; place-items: center;
+  border: 0; border-left: 1px solid rgba(255, 255, 255, 0.18); cursor: pointer;
+  background: transparent; color: #fff;
+  transition: background-color 150ms ease, transform 160ms var(--ease-out);
+}
+.video-modal__close svg { width: 18px; height: 18px; }
+.video-modal__close:active { transform: scale(0.94); }
+.video-modal__close:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+@media (hover: hover) and (pointer: fine) { .video-modal__close:hover { background: #6512EA; } }
+
+.video-modal__frame { aspect-ratio: 16 / 9; background: #000; }
+.video-modal__frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+body.modal-open { overflow: hidden; }
+
+/* móvil vertical: de borde a borde */
+@media (max-width: 560px) {
+  .hist td.video-col .btn-sm { padding: 8px 10px; }
+  .video-modal { --head: 60px; --gap: 0px; width: 100vw; }
+  .video-modal__panel { border-left: 0; border-right: 0; }
+}
+/* móvil apaisado: el vídeo manda, cabecera compacta */
+@media (max-height: 500px) and (orientation: landscape) {
+  .video-modal { --head: 48px; --gap: 8px; }
+  .video-modal__head h3 { font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .video-modal__panel { transform: none; }
+  .video-modal__close:active { transform: none; }
+}

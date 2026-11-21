@@ -11,7 +11,7 @@ public interface PartidoRepository extends JpaRepository<Partido, Long> {
 
     @Query("""
         select new es.shamchester.model.FilaPartido(
-            p.id, p.jornada, p.fechaHora, r.nombre, p.golesFavor, p.golesContra, p.resultado)
+            p.id, p.jornada, p.fechaHora, r.nombre, p.golesFavor, p.golesContra, p.resultado, p.videoUrl)
             from Partido p
             join p.rival r
             join p.temporada t

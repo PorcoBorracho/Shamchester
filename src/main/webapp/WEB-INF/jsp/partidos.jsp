@@ -57,6 +57,7 @@
                         <th scope="col"><s:text name="partidos.history.date"/></th>
                         <th scope="col"><s:text name="partidos.history.rival"/></th>
                         <th scope="col"><s:text name="partidos.history.score"/></th>
+                        <th scope="col" class="video-col"><span class="sr"><s:text name="partidos.history.video"/></span></th>
                         <th scope="col"><span class="sr"><s:text name="partidos.history.outcome"/></span></th>
                     </tr>
                 </thead>
@@ -66,16 +67,34 @@
                         <td><s:property value="#p.fechaCorta()"/></td>
                         <td class="rival"><s:property value="#p.rival()"/></td>
                         <td class="score"><s:if test="#p.resultado() != null"><s:property value="#p.golesFavor()"/>-<s:property value="#p.golesContra()"/></s:if><s:else>–</s:else></td>
+                        <td class="video-col"><s:if test="#p.tieneVideo()"><button type="button" class="btn btn-ghost btn-sm js-video"
+                                                        data-video-id="<s:property value="#p.youtubeId()"/>"
+                                                        data-video-title="<s:text name="partidos.video.title"><s:param value="#p.rival()"/></s:text>"
+                                                        aria-label="<s:text name="partidos.video.watchFull"><s:param value="#p.rival()"/></s:text>"
+                                                        aria-haspopup="dialog"><svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M2 1.2v9.6L10.4 6z" fill="currentColor"/></svg><s:text name="partidos.video.watch"/></button></s:if></td>
                         <td class="res"><s:if test="#p.resultado() != null"><i class="r-<s:property value="#p.resultado()"/>" title="<s:text name="%{'result.' + #p.resultado()}"/>" aria-label="<s:text name="%{'result.' + #p.resultado()}"/>"><s:text name="%{'result.' + #p.resultado() + '.short'}"/></i></s:if><s:else>–</s:else></td>
                     </tr>
                 </s:iterator>
                 <s:if test="historico == null || historico.isEmpty()">
-                    <tr><td colspan="4"><s:text name="partidos.history.empty"/></td></tr>
+                    <tr><td colspan="5"><s:text name="partidos.history.empty"/></td></tr>
                 </s:if>
                 </tbody>
             </table>
         </div>
     </section>
+
+    <dialog class="video-modal" id="video-modal" aria-labelledby="video-modal-title">
+        <div class="video-modal__panel">
+            <div class="video-modal__head">
+                <h3 id="video-modal-title"></h3>
+                <button type="button" class="video-modal__close" data-close aria-label="<s:text name="partidos.video.close"/>">
+                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>
+                </button>
+            </div>
+            <div class="video-modal__frame"></div>
+        </div>
+    </dialog>
 </main>
 <jsp:include page="common/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/countdown.js"></script>
+<script src="${pageContext.request.contextPath}/js/video-modal.js"></script>
