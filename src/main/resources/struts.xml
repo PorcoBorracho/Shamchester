@@ -16,6 +16,7 @@
     <constant name="struts.allowlist.packageNames" value="es.shamchester.model"/>
     <!-- Deja pasar los archivos estáticos -->
     <constant name="struts.action.excludePattern" value="/css/.*,/js/.*,/img/.*"/>
+    <constant name="struts.allowlist.packageNames" value="es.shamchester.model,es.shamchester.entity"/>
 
     <package name="web" namespace="/" extends="struts-default">
         <default-action-ref name="inicio"/>
