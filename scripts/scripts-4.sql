@@ -1,7 +1,3 @@
--- ============================================================
---  scripts-4 · Goles por jugador y partido
---  Necesario para "Intervenciones" (las fórmulas del Excel suman los goles).
--- ============================================================
 begin;
 
 alter table public.partido_estadisticas
