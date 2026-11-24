@@ -1,0 +1,39 @@
+# Shamchester United · stack para Portainer
+# La imagen la construye GitHub Actions al hacer push a la rama "despliegue".
+# Las variables ${...} se rellenan en Portainer (Environment variables del stack).
+services:
+  web:
+    image: ghcr.io/porcoborracho/shamchester:despliegue
+    container_name: shamchester
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    environment:
+      APP_NAME: ${APP_NAME:-Shamchester United}
+      APP_ENV: production
+      APP_DEFAULT_LOCALE: ${APP_DEFAULT_LOCALE:-gl}
+      NEXT_MATCH_DATE: ${NEXT_MATCH_DATE:-}
+      SOCIAL_INSTAGRAM_URL: ${SOCIAL_INSTAGRAM_URL:-}
+      SOCIAL_X_URL: ${SOCIAL_X_URL:-}
+      SOCIAL_YOUTUBE_URL: ${SOCIAL_YOUTUBE_URL:-}
+      CONTACT_EMAIL: ${CONTACT_EMAIL:-}
+      MAP_URL: ${MAP_URL:-}
+      SUPABASE_DB_HOST: ${SUPABASE_DB_HOST:?Falta SUPABASE_DB_HOST}
+      SUPABASE_DB_PORT: ${SUPABASE_DB_PORT:-5432}
+      SUPABASE_DB_NAME: ${SUPABASE_DB_NAME:-postgres}
+      SUPABASE_DB_USER: ${SUPABASE_DB_USER:?Falta SUPABASE_DB_USER}
+      SUPABASE_DB_PASSWORD: ${SUPABASE_DB_PASSWORD:?Falta SUPABASE_DB_PASSWORD}
+      SUPABASE_DB_POOL_SIZE: ${SUPABASE_DB_POOL_SIZE:-5}
+      LOG_DIR: /logs
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    volumes:
+      - logs:/logs
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  logs:
