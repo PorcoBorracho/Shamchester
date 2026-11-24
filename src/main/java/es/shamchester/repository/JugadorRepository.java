@@ -33,7 +33,8 @@ public interface JugadorRepository extends JpaRepository<Jugador, Long> {
                    sum(e.regate_malo)            as "regatesMalos",
                    sum(e.accion_defensiva)       as "defensa",
                    sum(e.paradas)                as "paradas",
-                   sum(e.goles)                  as "goles"
+                   sum(e.goles)                  as "goles",
+                   sum(e.asist)                  as "asistencias"
               from public.partido_estadisticas e
              where e.jugador_id in (:ids)
                and e.min_p1 + e.min_p2 > 0

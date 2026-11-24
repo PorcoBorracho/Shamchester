@@ -11,7 +11,7 @@ import es.shamchester.util.Fechas;
 public final class EstadisticasJugador {
 
     public static final EstadisticasJugador VACIA =
-            new EstadisticasJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            new EstadisticasJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     private final long partidos;      // AC
     private final long minutos;       // I
@@ -21,11 +21,12 @@ public final class EstadisticasJugador {
     private final long defensa;       // J
     private final long paradas;       // K
     private final long goles;         // L
+    private final long asistencias;         // M
     /** Radar (0-100): valor relativo al mejor de la plantilla. */
     private final int radarPases, radarRegates, radarDefensa;
 
     public EstadisticasJugador(long partidos, long minutos, long pb, long pf, long ppb, long ppf,
-                               long rb, long rf, long defensa, long paradas, long goles,
+                               long rb, long rf, long defensa, long paradas, long goles, long asistencias,
                                int radarPases, int radarRegates, int radarDefensa) {
         this.partidos = partidos;
         this.minutos = minutos;
@@ -38,6 +39,7 @@ public final class EstadisticasJugador {
         this.defensa = defensa;
         this.paradas = paradas;
         this.goles = goles;
+        this.asistencias = asistencias;
         this.radarPases = radarPases;
         this.radarRegates = radarRegates;
         this.radarDefensa = radarDefensa;
@@ -47,12 +49,12 @@ public final class EstadisticasJugador {
         return new EstadisticasJugador(n(f.getPartidos()), n(f.getMinutos()),
                 n(f.getPasesBuenos()), n(f.getPasesMalos()), n(f.getPpBuenos()), n(f.getPpMalos()),
                 n(f.getRegatesBuenos()), n(f.getRegatesMalos()),
-                n(f.getDefensa()), n(f.getParadas()), n(f.getGoles()), 0, 0, 0);
+                n(f.getDefensa()), n(f.getParadas()), n(f.getGoles()), n(f.getAsistencias()), 0, 0, 0);
     }
 
     /** Copia con los valores del radar ya normalizados contra los máximos de la plantilla. */
     public EstadisticasJugador conRadar(double maxCoefPases, double maxCoefRegates, double maxDefensa50) {
-        return new EstadisticasJugador(partidos, minutos, pb, pf, ppb, ppf, rb, rf, defensa, paradas, goles,
+        return new EstadisticasJugador(partidos, minutos, pb, pf, ppb, ppf, rb, rf, defensa, paradas, goles, asistencias,
                 escala(coefPases(), maxCoefPases), escala(coefRegates(), maxCoefRegates),
                 escala(defensa50(), maxDefensa50));
     }
