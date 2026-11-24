@@ -69,8 +69,10 @@ public class PlantillaService {
         double maxPases = base.values().stream().mapToDouble(EstadisticasJugador::coefPases).max().orElse(0);
         double maxRegates = base.values().stream().mapToDouble(EstadisticasJugador::coefRegates).max().orElse(0);
         double maxDefensa = base.values().stream().mapToDouble(EstadisticasJugador::defensa50).max().orElse(0);
+        double maxIntervenciones = base.values().stream().mapToDouble(EstadisticasJugador::intervenciones50).max().orElse(0);
+        double maxGolesAsist = base.values().stream().mapToDouble(EstadisticasJugador::golesAsistencias50).max().orElse(0);
         return base.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
-                e -> e.getValue().conRadar(maxPases, maxRegates, maxDefensa)));
+                e -> e.getValue().conRadar(maxPases, maxRegates, maxDefensa, maxIntervenciones, maxGolesAsist)));
     }
 
     public Optional<byte[]> foto(Long jugadorId) {
