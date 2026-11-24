@@ -13,4 +13,5 @@ public interface FilaEstadisticas {
     Long getDefensa();
     Long getParadas();
     Long getGoles();
+    Long getAsistencias();
 }
