@@ -17,9 +17,11 @@ public class JugadorVista {
     private final boolean lesionado;
     private final boolean conFoto;
     private final List<String> caracteristicas;
+    private final EstadisticasJugador estadisticas;
 
     public JugadorVista(Long id, short dorsal, String nombre, String posicion,
-                        boolean lesionado, boolean conFoto, List<String> caracteristicas) {
+                        boolean lesionado, boolean conFoto, List<String> caracteristicas,
+                        EstadisticasJugador estadisticas) {
         this.id = id;
         this.dorsal = dorsal;
         this.nombre = nombre;
@@ -28,6 +30,7 @@ public class JugadorVista {
         this.lesionado = lesionado;
         this.conFoto = conFoto;
         this.caracteristicas = List.copyOf(caracteristicas);
+        this.estadisticas = estadisticas == null ? EstadisticasJugador.VACIA : estadisticas;
     }
 
     public Long getId() { return id; }
@@ -39,6 +42,9 @@ public class JugadorVista {
     public boolean isLesionado() { return lesionado; }
     public boolean isConFoto() { return conFoto; }
     public List<String> getCaracteristicas() { return caracteristicas; }
+    public boolean isConCaracteristicas() { return !caracteristicas.isEmpty(); }
+    public EstadisticasJugador getEstadisticas() { return estadisticas; }
+    public boolean isPortero() { return "POR".equals(codigoPosicion); }
 
     /** La posición es texto libre en la BDD: se deduce el código por el comienzo de la palabra. */
     static String codigo(String posicion) {
