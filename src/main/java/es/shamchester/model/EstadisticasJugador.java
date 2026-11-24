@@ -11,7 +11,7 @@ import es.shamchester.util.Fechas;
 public final class EstadisticasJugador {
 
     public static final EstadisticasJugador VACIA =
-            new EstadisticasJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            new EstadisticasJugador(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     private final long partidos;      // AC
     private final long minutos;       // I
@@ -21,13 +21,14 @@ public final class EstadisticasJugador {
     private final long defensa;       // J
     private final long paradas;       // K
     private final long goles;         // L
-    private final long asistencias;         // M
+    private final long asistencias;   // M
     /** Radar (0-100): valor relativo al mejor de la plantilla. */
-    private final int radarPases, radarRegates, radarDefensa;
+    private final int radarPases, radarRegates, radarDefensa, radarIntervenciones, radarGolesAsistencias;
 
     public EstadisticasJugador(long partidos, long minutos, long pb, long pf, long ppb, long ppf,
                                long rb, long rf, long defensa, long paradas, long goles, long asistencias,
-                               int radarPases, int radarRegates, int radarDefensa) {
+                               int radarPases, int radarRegates, int radarDefensa,
+                               int radarIntervenciones, int radarGolesAsistencias) {
         this.partidos = partidos;
         this.minutos = minutos;
         this.pb = pb;
@@ -43,20 +44,29 @@ public final class EstadisticasJugador {
         this.radarPases = radarPases;
         this.radarRegates = radarRegates;
         this.radarDefensa = radarDefensa;
+        this.radarIntervenciones = radarIntervenciones;
+        this.radarGolesAsistencias = radarGolesAsistencias;
     }
 
     public static EstadisticasJugador de(FilaEstadisticas f) {
         return new EstadisticasJugador(n(f.getPartidos()), n(f.getMinutos()),
                 n(f.getPasesBuenos()), n(f.getPasesMalos()), n(f.getPpBuenos()), n(f.getPpMalos()),
                 n(f.getRegatesBuenos()), n(f.getRegatesMalos()),
-                n(f.getDefensa()), n(f.getParadas()), n(f.getGoles()), n(f.getAsistencias()), 0, 0, 0);
+                n(f.getDefensa()), n(f.getParadas()), n(f.getGoles()), n(f.getAsistencias()), 0, 0, 0, 0, 0);
     }
 
     /** Copia con los valores del radar ya normalizados contra los máximos de la plantilla. */
-    public EstadisticasJugador conRadar(double maxCoefPases, double maxCoefRegates, double maxDefensa50) {
+    public EstadisticasJugador conRadar(double maxCoefPases, double maxCoefRegates, double maxDefensa50,
+                                        double maxIntervenciones50, double maxGolesAsistencias50) {
         return new EstadisticasJugador(partidos, minutos, pb, pf, ppb, ppf, rb, rf, defensa, paradas, goles, asistencias,
                 escala(coefPases(), maxCoefPases), escala(coefRegates(), maxCoefRegates),
-                escala(defensa50(), maxDefensa50));
+                escala(defensa50(), maxDefensa50), escala(intervenciones50(), maxIntervenciones50),
+                escala(golesAsistencias50(), maxGolesAsistencias50));
+    }
+
+    /** N · Goles + asistencias, por cada 50 min (para el radar: así no gana quien más minutos juega). */
+    public double golesAsistencias50() {
+        return minutos == 0 ? 0 : (double) (goles + asistencias) / minutos * 50;
     }
 
     // ------------------------------------------------------------------ fórmulas del Excel
@@ -142,9 +152,21 @@ public final class EstadisticasJugador {
     public int getRadarRegates() { return radarRegates; }
     public int getRadarDefensa() { return radarDefensa; }
 
-    /** Vértices del polígono del radar (SVG 200×200, centro 100,100, radio 80): Pases arriba, Regates abajo-derecha, Defensa abajo-izquierda. */
+    public int getRadarIntervenciones() { return radarIntervenciones; }
+    public int getRadarGolesAsistencias() { return radarGolesAsistencias; }
+
+    /**
+     * Vértices del polígono del radar (SVG 200×200, centro 100,100, radio 80), en sentido horario
+     * desde arriba: Pases, Regates, Goles + asistencias, Defensa, Intervenciones.
+     */
     public String getRadarPuntos() {
-        return punto(radarPases, -90) + " " + punto(radarRegates, 30) + " " + punto(radarDefensa, 150);
+        int[] valores = {radarPases, radarRegates, radarGolesAsistencias, radarDefensa, radarIntervenciones};
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < valores.length; i++) {
+            if (i > 0) sb.append(' ');
+            sb.append(punto(valores[i], -90 + 72 * i));
+        }
+        return sb.toString();
     }
 
     // ------------------------------------------------------------------ utilidades
