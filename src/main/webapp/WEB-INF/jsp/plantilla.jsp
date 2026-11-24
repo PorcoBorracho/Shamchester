@@ -55,7 +55,6 @@
                                 <text class="radar__label" x="172" y="152" text-anchor="middle"><s:text name="plantilla.stats.radar.dribbles"/></text>
                                 <text class="radar__label" x="28" y="152" text-anchor="middle"><s:text name="plantilla.stats.radar.defence"/></text>
                             </svg>
-                            <figcaption><s:text name="plantilla.stats.radar.caption"/></figcaption>
                         </figure>
                         </s:if>
                     </template>
